@@ -62,6 +62,7 @@ function q($sql){
     $pdo= new PDO($dsn,'root','');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
+
 [輸入]
 此 function 接收一個參數 $sql， 資料型態為字串，用來傳入sql指令語法
 [過程]
@@ -83,3 +84,10 @@ pdo使用query方法讀取參數$sql(執行指令)，
 function to($url){
     header("location:$url");
 }
+[輸入]
+
+[過程]
+
+[輸出]
+
+[功能目標]
