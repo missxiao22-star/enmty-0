@@ -1,6 +1,6 @@
 <?php
-date_default_timezone_set("Asia/Taipei");
 session_start();
+date_default_timezone_set("Asia/Taipei");
 
 function dd($array){
     echo "<pre>";
@@ -9,67 +9,140 @@ function dd($array){
 }
 
 function q($sql){
-    $dsn="mysql:host=localhost;charset=utf8;dbname=db01";
-    $pdo= new PDO($dsn,'root','');
-    return $pdo->query($sql->fetchAll(PDO::FETCH_ASSOC));
+    $dsn='mysql:host=localhost;dbname=db09;charset=utf8';
+    $pdo=new PDO($dsn,'root','');
+    return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function to($url){
-    header("location:$url");
+    header("location:".$url);
 }
+
 
 class DB{
-    private $dsn="mysql:host=localhost;charset=utf8;dbname=db01";
-    private $pdo;
-    private $table;
-    
-    function __consturst($table){
-        $this->table=$table;
-        $this->pdo= new PDO($this->dsn,'root','');
-    }
+private $dsn="mysql:host=localhost;dbname=db09;charset=utf8";
+private $pdo;   
+private $table;
 
-    function all(...$arg){
-        $sql= "SELECT *FROM $this->table";
-        if(isset($arg[0])){
-            if(is_array($arg[0])){
-                $tmp=$this->arraytosql($arg[0]);
-                $sql=$sql." WHERE ".join(" AND ",$tmp);
-            }else{
-                $sql .= $arg[0];
-            }
-        }
-        if(isset($arg[1])){
-            $sql .=$arg[1];
-        }
-        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    function count(...$arg){
-        $sql= "SELECT COUNT(*) FROM $this->table";
-        if(isset($arg[0])){
-            if(is_array($arg[0])){
-                $tmp=$this->arraytosql($arg[0]);
-                $sql=$sql." WHERE ".join(" AND ",$tmp);
-            }else{
-                $sql .= $arg[0];
-            }
-        }
-        if(isset($arg[1])){
-            $sql .=$arg[1];
-        }
-        return $this->pdo->query($sql)->fetColumn();
-    }
-
-    function find($id){
-         $sql= "SELECT * FROM $this->table";
-
-        if(is_array($id)){
-            $tmp=$this->arraytosql($id);
-            $sql=$sql." WHERE ".join(" AND ",$tmp);
-        }else{
-            $sql .= " WHERE `id` = '$id'";
-        }
-        return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-    }
+function __construct($table){
+    $this->table=$table;
+    $this->pdo=new PDO($this->dsn,"root",'');
 }
-?>
+
+function all(...$arg){
+    $sql="select * from $this->table ";
+    if(isset($arg[0])){
+        if(is_array($arg[0])){
+            $tmp=$this->arraytosql($arg[0]);
+            $sql=$sql." where ".join(" AND " , $tmp);
+
+        }else{
+            $sql .= $arg[0];
+        }
+    }
+
+    if(isset($arg[1])){
+        $sql .= $arg[1];
+    }
+
+    return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// select count(*) from 'admin' where `acc` = 'admin'; 
+function count(...$arg){
+    $sql="select count(*) from $this->table ";
+    if(isset($arg[0])){
+        if(is_array($arg[0])){
+            $tmp=$this->arraytosql($arg[0]);
+            $sql=$sql." where ".join(" AND " , $tmp);
+
+        }else{
+            $sql .= $arg[0];
+        }
+    }
+
+    if(isset($arg[1])){
+        $sql .= $arg[1];
+    }
+
+    return $this->pdo->query($sql)->fetchColumn();
+    // fetchColumn 回傳數字
+}
+
+function find($id){
+    $sql="select * from $this->table ";
+    
+    if(is_array($id)){
+        $tmp=$this->arraytosql($id);
+        $sql=$sql." where ".join(" AND " , $tmp);
+
+    }else{
+        $sql .= " WHERE `id`='$id'";
+    }
+    //echo $sql;
+    return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+}
+
+
+function save($array){
+    if(isset($array['id'])){
+        //update
+        $sql="update $this->table set ";
+        $tmp=$this->arraytosql($array);
+        $sql.= join(" , ",$tmp) . "where `id`= '{$array['id']}'";
+    }else{
+        //insert
+        $cols=join("`,`",array_keys($array));
+        $values=join("','",$array);
+        $sql="insert into $this->table (`$cols`) values('$values')";
+    }
+
+    return $this->pdo->exec($sql);
+}
+
+function del($id){
+    $sql="delete  from $this->table ";
+    
+    if(is_array($id)){
+        $tmp=$this->arraytosql($id);
+        $sql=$sql." where ".join(" AND " , $tmp);
+
+    }else{
+        $sql .= " WHERE `id`='$id'";
+    }
+    //echo $sql;
+    return $this->pdo->exec($sql);
+}
+
+
+private function arraytosql($array){
+    $tmp=[];
+    $temp = ["`acc`='admin'","`pw`='1234'"];
+    foreach($array as $key => $value){
+        $tmp[]="`$key`='$value'";
+        $tmp="`pw`='1234'";
+    }
+
+    return $tmp;
+}
+
+}
+
+
+$Title=new DB('title');
+$Ad=new DB('ad');
+$Mvim=new DB('mvim');
+$Image=new DB('image');
+$News=new DB('news');
+$Admin=new DB('admin');
+$Menu=new DB('menu');
+$Total=new DB('total');
+$Bottom=new DB('bottom');
+
+if(!isset($_SESSION['visit'])){
+    //第一次來訪
+    $t=$Total->find(1);
+    $t['total']++;
+    $Total->save($t);
+    $_SESSION['visit']=1;
+}
