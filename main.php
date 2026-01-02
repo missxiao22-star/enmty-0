@@ -17,6 +17,8 @@
                         foreach($muims as $mv){
                             echo "lin.push ('upload/{$mv['img']}');\n";
                     }
+                    // 目前題目在前端這邊寫的是jq語法，
+                    // 若是要將要顯示的動畫顯示在首頁瀏覽器就需要用jq寫
                     // 在jq的寫法會是下方這樣，但因為要將PHP功能寫進來，所以造一個字串讓它呈現出jq的語句
                     // lin.push ('upload/{$mv['img']}');\n"
                     ?>

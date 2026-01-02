@@ -80,12 +80,30 @@
 					onclick="lo('?do=admin')">管理登入</button>
 				<div style="width:89%; height:480px;" class="dbor">
 					<span class="t botli">校園映象區</span>
+					<!-- 製作顯示圖片往上的按鈕 -->
+					<div class="btn" coclick="pp(1)"><img src="icon/up.jpg" alt=""></div>
+					<?php
+					//圖片讀取images資料庫裡面的欄位sh顯示為1的都要顯示，使用$Image物件all抓取
+					$images=$Image->all(['sh=>1']);
+					//迴圈跑images資料庫的$key跟$img	
+					foreach($images as $key => $img){
+						//將結果印出在瀏覽器，
+						echo "<div class='im' id='ssaa{$key}' style='display:none;text-align:center:margin:3px 0'>";
+						//將結果印出在瀏覽器，
+						echo "<img src='upload/{$img['img']}' style='with:150px;height:103px:border:3px solid orange;'>";
+					}
+					?>
+					<!-- 製作顯示圖片往下的按鈕 -->
+					<div class="btn" coclick="pp(2)"><img src="icon/up.jpg" alt=""></div>
 					<script>
-						var nowpage = 0, num = 0;
+						var nowpage = 0, 
+							num = <?= count($images)?>;
+
 						function pp(x) {
 							var s, t;
 							if (x == 1 && nowpage - 1 >= 0) { nowpage--; }
-							if (x == 2 && (nowpage + 1) * 3 <= num * 1 + 3) { nowpage++; }
+							//顯示圖片的算法改成....
+							if (x == 2 && (nowpage + 1) <= num * 1 - 3) { nowpage++; }
 							$(".im").hide()
 							for (s = 0; s <= 2; s++) {
 								t = s * 1 + nowpage * 1;
