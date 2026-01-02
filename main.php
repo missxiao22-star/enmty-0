@@ -1,17 +1,23 @@
 			<div class="di"
 				style="height:540px; border:#999 1px solid; width:53.2%; margin:2px 0px 0px 0px; float:left; position:relative; left:20px;">
 				<marquee scrolldelay="120" direction="left" style="position:absolute; width:100%; height:40px;">
-				</marquee>
+                   <?php
+                        $ads=$Ad->all(['sh'=>1]);
+                        foreach($ads as $ad){
+                            echo $ad['text']."&nbsp;&nbsp;&nbsp;&nbsp;";
+                        }
+                   ?> 
+                </marquee>
 				<div style="height:32px; display:block;"></div>
 				<!--正中央-->
 				<script>
 					var lin = new Array();
 					<?php
-                    $mvims=$Mvim->all(['sh =>1']);
-                    foreach($muims as $mv){
-                        echo "lin.push ('upload/{$mv['img']}');\n";
+                        $mvims=$Mvim->all(['sh =>1']);
+                        foreach($muims as $mv){
+                            echo "lin.push ('upload/{$mv['img']}');\n";
                     }
-                    // 在jq的寫法會是這樣，但因為要將PHP功能寫進來，所以造一個字串讓它呈現出jq的語句
+                    // 在jq的寫法會是下方這樣，但因為要將PHP功能寫進來，所以造一個字串讓它呈現出jq的語句
                     // lin.push ('upload/{$mv['img']}');\n"
                     ?>
                     var now = 0;
