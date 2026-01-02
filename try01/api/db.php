@@ -117,10 +117,9 @@ function del($id){
 
 private function arraytosql($array){
     $tmp=[];
-    $temp = ["`acc`='admin'","`pw`='1234'"];
+    
     foreach($array as $key => $value){
         $tmp[]="`$key`='$value'";
-        $tmp="`pw`='1234'";
     }
 
     return $tmp;
