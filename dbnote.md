@@ -146,7 +146,7 @@ function to($url){
 此 function 接收一個參數為字串型態($url)，，目標導向url
 
 [過程]  
-呼叫內建函數header接收一個字串參數(網址)，構造一個http響應標頭
+呼叫內建函數header接收一個字串參數(網址)，構造一個http響應式標頭
 
 [輸出]  
 伺服器將302狀態碼及location網址傳送給瀏覽器
