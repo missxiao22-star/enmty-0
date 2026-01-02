@@ -45,7 +45,19 @@
 				</span>
 				</div>
 			</div>
-				<?php  include "./main.php"; ?>
+			
+				<!-- 一開始先用include來確保挖洞正確且不跑版
+				 <?php  include "./main.php"; ?> -->
+				 <!-- 確認沒有問題之後再套用$do+判斷式來達到頁面跳轉 -->
+				 <?php
+				    $do=$_GET['do']??'title';
+					$file = "./back/".$do.".php";
+					if(file_exists($file)){
+						include $file;	
+					}else{
+						include "./back/title.php";
+					}
+				 ?>
 			<div id="alt"
 				style="position: absolute; width: 350px; min-height: 100px; word-break:break-all; text-align:justify;  background-color: rgb(255, 255, 204); top: 50px; left: 400px; z-index: 99; display: none; padding: 5px; border: 3px double rgb(255, 153, 0); background-position: initial initial; background-repeat: initial initial;">
 			</div>

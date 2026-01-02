@@ -6,7 +6,16 @@
 				<!--正中央-->
 				<script>
 					var lin = new Array();
-					var now = 0;
+					<?php
+                    $mvims=$Mvim->all(['sh =>1']);
+                    foreach($muims as $mv){
+                        echo "lin.push ('upload/{$mv['img']}');\n";
+                    }
+                    // 在jq的寫法會是這樣，但因為要將PHP功能寫進來，所以造一個字串讓它呈現出jq的語句
+                    // lin.push ('upload/{$mv['img']}');\n"
+                    ?>
+                    var now = 0;
+                    ww()
 					if (lin.length > 1) {
 						setInterval("ww()", 3000);
 						now = 1;
@@ -21,7 +30,10 @@
 				</script>
 				<div style="width:100%; padding:2px; height:290px;">
 					<div id="mwww" loop="true" style="width:100%; height:100%;">
-						<div style="width:99%; height:100%; position:relative;" class="cent">沒有資料</div>
+						<div style="width:99%; height:100%; position:relative;" class="cent">
+                            <!-- embed 儲存路徑 -->
+                            <embed loop=true src='" + lin[now] + "' style='width:99%; height:100%;'></embed>
+                        </div>
 					</div>
 				</div>
 				<div
