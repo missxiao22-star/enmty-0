@@ -48,18 +48,24 @@
 					style="width:95%; padding:2px; height:190px; margin-top:10px; padding:5px 10px 5px 10px; border:#0C3 dashed 3px; position:relative;">
 					<span class="t botli">最新消息區
                         <?php
+                        //使用$News物件計算news資料表裡面欄位sh為1的所有資料，如果資料大於5
                         if($News->count(['sh'=>1])>5){
+                            //就在瀏覽器顯示a標籤
                             echo "<a herf='?do=news' style='float:right;'>More...</a>";
                         }
                         ?>
 					</span>
                         <?php
+                        //使用$News物件抓取所有news資料表內欄位sh為1的資料，最多顯示5筆
                         $news=$News->all(['sh'=>1],"limit 5")
                         ?>
 					<ul class="ssaa" style="list-style-type:decimal;">
                         <?php
+                        //用迴圈跑news資料表內的所有資料並存到$n內
                         foreach($news as $n){
+                            //在網頁顯示標籤格式，依照標籤格式顯示
                             echo "<li>";
+                            //在網頁顯示，使用mb_substr方法，讓$n讀取到的news資料表內的欄位text資料(字串)斷行
                             echo mb_substr($n['text'],0,20);
                             echo "<div class='all' style='display:none;'>";
                             echo $n['text'];
